@@ -3,20 +3,16 @@
     <h1>Rick and Morty Characters</h1>
     <FilterForm @applyFilters="applyFilters" />
     <CharacterList :characters="characters" />
-    <Pagination
-      :page="page"
-      :totalPages="totalPages"
-      @changePage="changePage"
-    />
+    <Pagination :page="page" :totalPages="totalPages" @changePage="changePage" />
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import CharacterList from './components/CharacterList.vue';
-import Pagination from './components/Pagination.vue';
-import FilterForm from './components/FilterForm.vue';
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import CharacterList from './components/CharacterList.vue'
+import Pagination from './components/Pagination.vue'
+import FilterForm from './components/FilterForm.vue'
 
 export default {
   name: 'App',
@@ -26,34 +22,34 @@ export default {
     FilterForm
   },
   setup() {
-    const characters = ref([]);
-    const page = ref(1);
-    const totalPages = ref(1);
-    const filters = ref({ name: '', status: '' });
+    const characters = ref([])
+    const page = ref(1)
+    const totalPages = ref(1)
+    const filters = ref({ name: '', status: '' })
 
     const fetchCharacters = async () => {
-      const { name, status } = filters.value;
+      const { name, status } = filters.value
       const response = await axios.get('https://rickandmortyapi.com/api/character', {
         params: { page: page.value, name, status }
-      });
-      characters.value = response.data.results;
-      totalPages.value = response.data.info.pages;
-    };
+      })
+      characters.value = response.data.results
+      totalPages.value = response.data.info.pages
+    }
 
     const applyFilters = (newFilters) => {
-      filters.value = newFilters;
-      page.value = 1;
-      fetchCharacters();
-    };
+      filters.value = newFilters
+      page.value = 1
+      fetchCharacters()
+    }
 
     const changePage = (newPage) => {
-      page.value = newPage;
-      fetchCharacters();
-    };
+      page.value = newPage
+      fetchCharacters()
+    }
 
     onMounted(() => {
-      fetchCharacters();
-    });
+      fetchCharacters()
+    })
 
     return {
       characters,
@@ -61,9 +57,9 @@ export default {
       totalPages,
       applyFilters,
       changePage
-    };
+    }
   }
-};
+}
 </script>
 
 <style>
@@ -80,5 +76,11 @@ h1 {
 .pagination,
 .filter-form {
   margin-bottom: 20px;
+}
+
+@media (min-width: 1024px) {
+  #app {
+    display: block;
+  }
 }
 </style>
